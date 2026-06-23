@@ -1,0 +1,26 @@
+{
+  "frontend": [
+    { "name": "React", "icon": "⬡", "level": 95 },
+    { "name": "TypeScript", "icon": "▣", "level": 90 },
+    { "name": "Next.js", "icon": "◈", "level": 85 },
+    { "name": "Tailwind", "icon": "◉", "level": 92 },
+    { "name": "Canvas API", "icon": "▦", "level": 80 },
+    { "name": "Framer Motion", "icon": "◎", "level": 78 }
+  ],
+  "backend": [
+    { "name": "Node.js", "icon": "⬢", "level": 92 },
+    { "name": "Python", "icon": "◆", "level": 88 },
+    { "name": "Go", "icon": "▷", "level": 72 },
+    { "name": "PostgreSQL", "icon": "▪", "level": 85 },
+    { "name": "Redis", "icon": "◈", "level": 80 },
+    { "name": "GraphQL", "icon": "△", "level": 75 }
+  ],
+  "tools": [
+    { "name": "Docker", "icon": "□", "level": 88 },
+    { "name": "Git", "icon": "⊞", "level": 95 },
+    { "name": "Linux", "icon": "▲", "level": 85 },
+    { "name": "AWS", "icon": "◇", "level": 78 },
+    { "name": "Nginx", "icon": "▶", "level": 80 },
+    { "name": "Figma", "icon": "◑", "level": 70 }
+  ]
+}

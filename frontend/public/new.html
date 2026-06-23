@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Flower Field — Wind</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: #f3e8d2;
+        overflow: hidden;
+      }
+
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+
+  <body>
+    <canvas id="main"></canvas>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const stage = params.get("stage");
+      const IMAGE_SRC = "flower1.png";
+      const STEP = 8;
+      const FONT_SIZE = 7;
+
+      const THRESHOLD = 90;
+      const WIND_STRENGTH = 1.0;
+      const TILE_SIZE = 115;
+
+      const canvas = document.getElementById("main");
+      const ctx = canvas.getContext("2d");
+
+      const offscreen = document.createElement("canvas");
+      const offCtx = offscreen.getContext("2d");
+
+      let srcDots = [];
+      let srcW = 0,
+        srcH = 0;
+      let tiles = [];
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      resize();
+
+      const img = new Image();
+      img.src = IMAGE_SRC;
+
+      img.onload = () => {
+        buildSourceDots();
+        buildTiles();
+        requestAnimationFrame(loop);
+      };
+
+      img.onerror = () => {
+        ctx.fillStyle = "#f55";
+        ctx.font = "16px monospace";
+        ctx.fillText(`✗ Could not load "${IMAGE_SRC}"`, 20, 40);
+      };
+
+      function buildSourceDots() {
+        srcW = img.naturalWidth;
+        srcH = img.naturalHeight;
+
+        offscreen.width = srcW;
+        offscreen.height = srcH;
+
+        offCtx.drawImage(img, 0, 0);
+        const { data } = offCtx.getImageData(0, 0, srcW, srcH);
+
+        srcDots = [];
+
+        for (let y = 0; y < srcH; y += STEP) {
+          for (let x = 0; x < srcW; x += STEP) {
+            const idx = (y * srcW + x) * 4;
+
+            const r = data[idx];
+            const g = data[idx + 1];
+            const b = data[idx + 2];
+            const a = data[idx + 3];
+
+            if (a < 10) continue;
+
+            const brightness = (r + g + b) / 3;
+
+            srcDots.push({
+              nx: x / srcW,
+              ny: y / srcH,
+              r,
+              g,
+              b,
+              brightness,
+            });
+          }
+        }
+      }
+
+      function buildTiles() {
+        const cols = Math.ceil(canvas.width / TILE_SIZE) + 1;
+        const rows = Math.ceil(canvas.height / TILE_SIZE) + 2;
+
+        tiles = [];
+
+        for (let row = -1; row < rows; row++) {
+          for (let col = -1; col < cols; col++) {
+            const staggerX = row % 2 === 0 ? TILE_SIZE * 0.5 : 0;
+
+            tiles.push({
+              originX: col * TILE_SIZE + staggerX,
+              originY: row * TILE_SIZE,
+              phase: Math.random() * Math.PI * 2,
+              speed: 0.5 + Math.random() * 0.6,
+              scale: 0.65 + Math.random() * 0.5,
+
+              // ⭐ rotation added
+              rotation: Math.random() * Math.PI * 2,
+            });
+          }
+        }
+      }
+
+      let t = 0;
+
+      let last = 0;
+
+      function loop(ts) {
+        // 🎯 FPS control based on stage
+        const targetDelay = stage === "intro" ? 16 : 40;
+        // 16ms ≈ 60 FPS (smooth intro)
+        // 40ms ≈ 25 FPS (lightweight background)
+
+        if (ts - last < targetDelay) {
+          requestAnimationFrame(loop);
+          return;
+        }
+
+        last = ts;
+
+        t = ts * 0.001;
+        draw();
+
+        requestAnimationFrame(loop);
+      }
+
+      function noise(x) {
+        return Math.sin(x) * Math.cos(x * 0.7);
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#f3e8d2";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.font = `bold ${FONT_SIZE}px monospace`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        for (const tile of tiles) {
+          const spatial = (tile.originX + tile.originY) * 0.002;
+
+          const wind =
+            noise(t * 0.6 + spatial) * 0.7 +
+            noise(t * 1.2 + spatial * 2.3) * 0.3;
+
+          const sway =
+            Math.sin(t * tile.speed + tile.phase) * 0.3 +
+            noise(t * 0.8 + tile.phase) * 0.7;
+
+          const totalSway = (wind + sway) * WIND_STRENGTH;
+
+          const tw = TILE_SIZE * tile.scale;
+          const th = TILE_SIZE * tile.scale;
+
+          // ⭐ optional subtle rotation drift (very small)
+          tile.rotation += Math.sin(t * 0.2 + tile.phase) * 0.0005;
+
+          const cos = Math.cos(tile.rotation);
+          const sin = Math.sin(tile.rotation);
+
+          const cx0 = tw / 2;
+          const cy0 = th / 2;
+
+          for (const d of srcDots) {
+            if (d.brightness < THRESHOLD) continue;
+
+            const lx = d.nx * tw;
+            const ly = d.ny * th;
+
+            const dx = lx - cx0;
+            const dy = ly - cy0;
+
+            // ⭐ rotate point
+            const rx = dx * cos - dy * sin;
+            const ry = dx * sin + dy * cos;
+
+            const topFactor = 1 - d.ny;
+
+            const lag = Math.sin(t * 0.5 + tile.phase) * 0.2;
+            const jitter = Math.sin((lx + ly + t * 50) * 0.02) * 0.5;
+
+            const windOffset =
+              (totalSway + lag) * TILE_SIZE * 0.12 * topFactor + jitter;
+
+            const cx = tile.originX + cx0 + rx + windOffset;
+            const cy = tile.originY + cy0 + ry;
+
+            if (
+              cx < -20 ||
+              cx > canvas.width + 20 ||
+              cy < -20 ||
+              cy > canvas.height + 20
+            )
+              continue;
+
+            const alpha = 0.45 + (d.brightness / 255) * 0.55;
+
+            ctx.fillStyle = `rgba(${d.r},${d.g},${d.b},${alpha})`;
+            ctx.fillText(".", cx, cy);
+          }
+        }
+      }
+
+      window.addEventListener("resize", () => {
+        resize();
+        buildTiles();
+      });
+    </script>
+  </body>
+</html>

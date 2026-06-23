@@ -1,0 +1,230 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================
+ROOT THEME (PASTEL OS)
+========================= */
+:root {
+  --bg: #e8d8b5;
+  --bg-grid: rgba(0, 0, 0, 0.06);
+
+  --paper: #f3e6c6;
+  --paper-shadow: #d8c49a;
+
+  --ink: #2b2b2b;
+  --ink-soft: #5a4a3a;
+
+  --line: #2b2b2b;
+
+  --primary: #e88aa6; /* pink */
+  --primary-dark: #c94f7c;
+  --secondary: #9a7bb5; /* purple */
+  --green: #a8c96b;
+  --orange: #e6b36a;
+}
+
+/* =========================
+BASE
+========================= */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+  }
+
+  body {
+    font-family: "Courier New", monospace;
+    cursor:
+      url("/cursor.png") 4 4,
+      default;
+    .sidebar-item:hover,
+    .pixel-btn:hover,
+    .win-btn:hover,
+    [role="button"]:hover {
+      cursor:
+        url("/hovercursor.png") 4 4,
+        pointer;
+    }
+    margin: 0;
+    background: var(--bg);
+
+    /* subtle grid like your image */
+  }
+
+  img {
+    image-rendering: auto;
+    display: block;
+  }
+
+  ::selection {
+    background: var(--primary);
+    color: white;
+  }
+}
+
+/* =========================
+COMPONENTS
+========================= */
+@layer components {
+  /* ── WINDOW ── */
+  .pixel-window {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+
+    background: var(--paper);
+    color: var(--ink);
+
+    border: 3px solid var(--line);
+
+    box-shadow:
+      4px 4px 0 var(--line),
+      8px 8px 0 var(--paper-shadow);
+  }
+
+  /* ── TITLEBAR ── */
+  .pixel-window-titlebar {
+    background: var(--primary);
+    color: var(--ink);
+
+    border-bottom: 3px solid var(--line);
+
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    text-transform: uppercase;
+    cursor: grab;
+  }
+
+  .pixel-window-titlebar:active {
+    cursor: grabbing;
+  }
+
+  /* ── BUTTONS (window controls) ── */
+  .win-btn {
+    width: 16px;
+    height: 16px;
+
+    border: 2px solid var(--line);
+    background: var(--paper);
+
+    box-shadow: 2px 2px 0 var(--line);
+    cursor: pointer;
+  }
+
+  .win-btn:hover {
+    background: var(--orange);
+  }
+
+  .win-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+
+  /* ── GENERIC BUTTON ── */
+  .pixel-btn {
+    border: 2px solid var(--line);
+    background: var(--orange);
+    color: var(--ink);
+
+    padding: 6px 12px;
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    box-shadow: 2px 2px 0 var(--line);
+    cursor: pointer;
+  }
+
+  .pixel-btn:hover {
+    background: var(--primary);
+  }
+
+  .pixel-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: none;
+  }
+
+  /* ── INPUT ── */
+  .pixel-input {
+    width: 100%;
+    border: 2px solid var(--line);
+    background: #fff;
+    color: var(--ink);
+
+    padding: 6px 8px;
+
+    box-shadow: inset 2px 2px 0 var(--paper-shadow);
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 10px 6px;
+    gap: 4px;
+
+    cursor: pointer;
+    color: var(--ink-soft);
+  }
+
+  .sidebar-item.active {
+    background: var(--paper);
+    border-left: 4px solid var(--primary);
+    color: var(--ink);
+  }
+
+  /* ── PROGRESS BAR ── */
+  .pixel-progress {
+    height: 12px;
+    border: 2px solid var(--line);
+    background: #fff;
+  }
+
+  .pixel-progress-fill {
+    height: 100%;
+    background: var(--green);
+  }
+
+  /* ── STATUS DOT ── */
+  .status-dot {
+    width: 8px;
+    height: 8px;
+
+    border: 2px solid var(--line);
+    background: var(--green);
+  }
+
+  /* ── CTA BUTTON ── */
+  .arcade-btn {
+    background: var(--paper);
+    border: 3px solid var(--line);
+    color: var(--ink);
+
+    padding: 12px 28px;
+    letter-spacing: 0.1em;
+
+    box-shadow: 4px 4px 0 var(--line);
+    cursor: pointer;
+  }
+
+  .arcade-btn:hover {
+    background: var(--primary);
+  }
+
+  .arcade-btn:active {
+    transform: translate(4px, 4px);
+    box-shadow: none;
+  }
+}

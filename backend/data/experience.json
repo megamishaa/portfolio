@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "role": "SENIOR FRONTEND ENGINEER",
+    "company": "AXIOM_SYSTEMS",
+    "period": "2022 — PRESENT",
+    "duration": "2+ YRS",
+    "description": "Lead engineer on core product dashboard. Architected component library used across 4 product lines. Reduced bundle size by 40%.",
+    "tags": ["React", "TypeScript", "GraphQL", "Micro-frontends"],
+    "status": "CURRENT"
+  },
+  {
+    "id": 2,
+    "role": "FULLSTACK DEVELOPER",
+    "company": "NOVA_TECH_LAB",
+    "period": "2020 — 2022",
+    "duration": "2 YRS",
+    "description": "Built real-time collaboration features for SaaS platform. Implemented WebSocket infrastructure serving 50k concurrent users.",
+    "tags": ["Node.js", "React", "WebSocket", "PostgreSQL"],
+    "status": "PAST"
+  },
+  {
+    "id": 3,
+    "role": "BACKEND DEVELOPER",
+    "company": "CIPHER_IO",
+    "period": "2019 — 2020",
+    "duration": "1 YR",
+    "description": "REST API development for fintech startup. Designed transaction processing pipeline handling $2M daily volume.",
+    "tags": ["Python", "Django", "PostgreSQL", "Docker"],
+    "status": "PAST"
+  },
+  {
+    "id": 4,
+    "role": "JUNIOR DEVELOPER",
+    "company": "GRID_STUDIO",
+    "period": "2018 — 2019",
+    "duration": "1 YR",
+    "description": "Frontend development for agency clients. Delivered 12 client projects across e-commerce and media sectors.",
+    "tags": ["JavaScript", "Vue.js", "SCSS", "WordPress"],
+    "status": "PAST"
+  }
+]

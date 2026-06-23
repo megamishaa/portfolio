@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "title": "NEURAL_DASH",
+    "description": "Real-time analytics dashboard powered by ML inference. Processes 10k events/sec with sub-100ms latency.",
+    "tech": ["React", "Python", "TensorFlow", "WebSocket", "Redis"],
+    "link": "https://github.com",
+    "status": "DEPLOYED",
+    "year": "2024"
+  },
+  {
+    "id": 2,
+    "title": "CIPHER_API",
+    "description": "Zero-trust authentication microservice. JWT + refresh token rotation with rate limiting and audit logs.",
+    "tech": ["Node.js", "Express", "PostgreSQL", "Docker", "JWT"],
+    "link": "https://github.com",
+    "status": "ACTIVE",
+    "year": "2024"
+  },
+  {
+    "id": 3,
+    "title": "PIXEL_FORGE",
+    "description": "Browser-based pixel art editor with layer support, animation timeline and export to GIF/spritesheet.",
+    "tech": ["React", "Canvas API", "IndexedDB", "Vite"],
+    "link": "https://github.com",
+    "status": "BETA",
+    "year": "2023"
+  },
+  {
+    "id": 4,
+    "title": "GHOST_NET",
+    "description": "P2P encrypted file sharing CLI tool. No central server, DHT routing, AES-256 encryption at rest.",
+    "tech": ["Go", "libp2p", "AES-256", "CLI"],
+    "link": "https://github.com",
+    "status": "DEPLOYED",
+    "year": "2023"
+  }
+]
